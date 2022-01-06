@@ -127,7 +127,7 @@ def get_metrics(data):
     print("TYYYYYPE", type(data))
     df = pd.DataFrame(data)
 
-    save_data = df.to_csv('/gdrive/MyDrive/Masterthesis/LSTM/Results/Results LSTM FCN.csv', mode= 'a')
+    df.to_csv('/gdrive/MyDrive/Masterthesis/LSTM/Results/Results LSTM FCN.csv', mode= 'a')
     print(df)
 
 # Cell
@@ -190,7 +190,7 @@ def plot_metrics(self: Recorder, nrows=None, ncols=None, figsize=None, final_los
         axs[ax_idx].legend(loc='best')
         axs[ax_idx].set_title(title)
     plt.show()
-    return get_metrics(metrics)
+    return print(metrics) #get_metrics(metrics)
 
 
 @patch
