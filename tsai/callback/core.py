@@ -75,7 +75,7 @@ class ShowGraph(Callback):
     "(Modified) Update a graph of training and validation loss"
     order,run_valid=65,False
     names = ['train', 'valid']
-    def __init__(self, plot_metrics:bool=True, final_losses:bool=True):
+    def __init__(self, plot_metrics:bool=False, final_losses:bool=False):
         store_attr("plot_metrics,final_losses")
 
     def before_fit(self):
@@ -109,6 +109,7 @@ class ShowGraph(Callback):
         margin = (y_max - y_min) * .05
         y_bounds = (y_min - margin, y_max + margin)
         self.update_graph([(iters, rec.losses), (self.nb_batches, val_losses)], x_bounds, y_bounds)
+        print(rec.losses)
 
     def after_fit(self):
         plt.close(self.graph_ax.figure)
@@ -132,12 +133,7 @@ class ShowGraph(Callback):
 ShowGraphCallback2 = ShowGraph
 
 # Cell
-class SilenceRecorder(Callback):
-    learn:Learner
-    def __post_init__(self):
-      self.learn.recorder.silent = True
 
-      
 class SaveModel(TrackerCallback):
     "A `TrackerCallback` that saves the model's best during training and loads it at the end with a verbose option."
     _only_train_loop,order = True,TrackerCallback.order+1
