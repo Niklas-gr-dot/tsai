@@ -123,13 +123,13 @@ def load_all(path='export', dls_fname='dls', model_fname='model', learner_fname=
 load_learner_all = load_all
 
 def get_metrics(data):
-    print("MEEETRICS", metrics)
-    print("TYYYYYPE", type(metrics))
-    df = pd.DataFrame(metrics)
+    print("MEEETRICS", data)
+    print("TYYYYYPE", type(data))
+    df = pd.DataFrame(data)
 
     save_data = df.to_csv('/gdrive/MyDrive/Masterthesis/LSTM/Results/Results LSTM FCN.csv', mode= 'a', )
     print(df)
-    
+
 # Cell
 @patch
 @delegates(subplots)
