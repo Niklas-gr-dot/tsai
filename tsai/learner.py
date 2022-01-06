@@ -485,6 +485,10 @@ def get_arch(arch_name):
     assert arch.__name__ == arch_name
     return arch
 
+class SilenceRecorder(Callback):
+    learn:Learner
+    def __post_init__(self):
+      self.learn.recorder.silent = True
 # Cell
 @delegates(build_ts_model)
 def ts_learner(dls, arch=None, c_in=None, c_out=None, seq_len=None, d=None, splitter=trainable_params,
@@ -506,7 +510,7 @@ def ts_learner(dls, arch=None, c_in=None, c_out=None, seq_len=None, d=None, spli
 
     learn = Learner(dls=dls, model=model,
                     loss_func=loss_func, opt_func=opt_func, lr=lr, cbs=cbs, metrics=metrics, path=path, splitter=splitter,
-                    model_dir=model_dir, wd=wd, wd_bn_bias=wd_bn_bias, train_bn=train_bn, moms=moms, )
+                    model_dir=model_dir, wd=wd, wd_bn_bias=wd_bn_bias, train_bn=train_bn, moms=moms,callback_fns=[SilenceRecorder] )
 
     if train_metrics and hasattr(learn, "recorder"):
         learn.recorder.train_metrics = True
