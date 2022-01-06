@@ -131,7 +131,7 @@ class ShowGraph(Callback):
         self.graph_ax.set_title(f'Losses\nepoch: {self.epoch +1}/{self.n_epoch}')
         self.graph_out.update(self.graph_ax.figure)
 
-ShowGraphCallback2 = ShowGraph
+#ShowGraphCallback2 = ShowGraph
 
 # Cell
 
