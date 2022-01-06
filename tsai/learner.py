@@ -3,6 +3,7 @@
 __all__ = ['load_all', 'load_learner_all', 'get_arch', 'all_archs_names', 'ts_learner', 'tsimage_learner']
 
 # Cell
+from sklearn import metrics
 from .imports import *
 from .utils import random_shuffle
 from .data.core import *
@@ -12,7 +13,7 @@ from .models.InceptionTimePlus import *
 from fastai.learner import *
 from fastai.vision.models.all import *
 from fastai.data.transforms import *
-
+import pandas as pd
 # Cell
 @patch
 def show_batch(self:Learner, **kwargs):
@@ -121,6 +122,14 @@ def load_all(path='export', dls_fname='dls', model_fname='model', learner_fname=
 
 load_learner_all = load_all
 
+def get_metrics(data):
+    print("MEEETRICS", metrics)
+    print("TYYYYYPE", type(metrics))
+    df = pd.DataFrame(metrics)
+
+    save_data = df.to_csv('/gdrive/MyDrive/Masterthesis/LSTM/Results/Results LSTM FCN.csv', mode= 'a', )
+    print(df)
+    
 # Cell
 @patch
 @delegates(subplots)
@@ -180,7 +189,8 @@ def plot_metrics(self: Recorder, nrows=None, ncols=None, figsize=None, final_los
         axs[ax_idx].set_xlim(xs[0], xs[-1])
         axs[ax_idx].legend(loc='best')
         axs[ax_idx].set_title(title)
-    plt.show()
+    #plt.show()
+    return get_metrics(metrics)
 
 
 @patch
