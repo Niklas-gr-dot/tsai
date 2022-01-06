@@ -163,14 +163,13 @@ def plot_metrics(self: Recorder, nrows=None, ncols=None, figsize=None, final_los
     figsize = figsize or (ncols * 6 + ncols - 1, nrows * 4 + nrows - 1)
     fig, axs = subplots(nrows, ncols, figsize=figsize, **kwargs)
     axs = axs.flatten()[:n]
-    print(metrics)
+    
     for i,name in enumerate(names):
         xs = np.arange(0, len(metrics))
         if name in ['train_loss', 'valid_loss']:
             ax_idx = 0
             m = metrics[:,i]
             title = 'losses'
-            print(metrics)
         elif name in ['train_final_loss', 'valid_final_loss']:
             ax_idx = 1
             m = metrics[-sel_idxs:,i]

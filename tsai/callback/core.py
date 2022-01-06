@@ -132,7 +132,12 @@ class ShowGraph(Callback):
 ShowGraphCallback2 = ShowGraph
 
 # Cell
+class SilenceRecorder(Callback):
+    learn:Learner
+    def __post_init__(self):
+      self.learn.recorder.silent = True
 
+      
 class SaveModel(TrackerCallback):
     "A `TrackerCallback` that saves the model's best during training and loads it at the end with a verbose option."
     _only_train_loop,order = True,TrackerCallback.order+1
