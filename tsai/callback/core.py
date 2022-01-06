@@ -99,6 +99,7 @@ class ShowGraph(Callback):
             self.rec_start = len(rec.losses)
         iters = range_of(rec.losses)
         val_losses = np.stack(rec.values)[:, self.learn.recorder.loss_idxs[-1]].tolist()
+        print(val_losses)
         x_bounds = (0, len(rec.losses) - 1)
         if self.epoch == 0:
             y_min = min((min(rec.losses), min(val_losses)))
@@ -109,7 +110,7 @@ class ShowGraph(Callback):
         margin = (y_max - y_min) * .05
         y_bounds = (y_min - margin, y_max + margin)
         self.update_graph([(iters, rec.losses), (self.nb_batches, val_losses)], x_bounds, y_bounds)
-        print(rec.losses)
+        
 
     def after_fit(self):
         plt.close(self.graph_ax.figure)
