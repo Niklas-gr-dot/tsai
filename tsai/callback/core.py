@@ -75,7 +75,7 @@ class ShowGraph(Callback):
     "(Modified) Update a graph of training and validation loss"
     order,run_valid=65,False
     names = ['train', 'valid']
-    def __init__(self, plot_metrics:bool=False, final_losses:bool=False):
+    def __init__(self, plot_metrics:bool=True, final_losses:bool=True):
         store_attr("plot_metrics,final_losses")
 
     def before_fit(self):
