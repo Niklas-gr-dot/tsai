@@ -81,6 +81,7 @@ class ShowGraph(Callback):
 
     def before_fit(self):
         self.run = not hasattr(self.learn, 'lr_finder') and not hasattr(self, "gather_preds")
+        self.learn.recorder.silent = True
         if not(self.run): return
         self.nb_batches = []
         self.learn.recorder.loss_idxs = [i for i,n in enumerate(self.learn.recorder.metric_names[1:-1]) if 'loss' in n]
@@ -94,6 +95,7 @@ class ShowGraph(Callback):
 
     def after_epoch(self):
         "Plot validation loss in the pbar graph"
+        self.learn.recorder.silent = True
         if not self.nb_batches: return
         rec = self.learn.recorder
         if self.epoch == 0:
@@ -114,10 +116,12 @@ class ShowGraph(Callback):
         
 
     def after_fit(self):
+        self.learn.recorder.silent = True
         plt.close(self.graph_ax.figure)
         if self.plot_metrics: self.learn.plot_metrics(final_losses=self.final_losses)
 
     def update_graph(self, graphs, x_bounds=None, y_bounds=None, figsize=(6,4)):
+        self.learn.recorder.silent = True
         if not hasattr(self, 'graph_fig'):
             self.graph_fig, self.graph_ax = plt.subplots(1, figsize=figsize)
             self.graph_out = display(self.graph_ax.figure, display_id=True)
@@ -151,6 +155,7 @@ class SaveModel(TrackerCallback):
 
     def after_epoch(self):
         "Compare the value monitored to its best score and save if best."
+        self.learn.recorder.silent = True
         if self.every_epoch:
             if (self.epoch%self.every_epoch) == 0: self._save(f'{self.fname}_{self.epoch}')
         else: #every improvement
@@ -161,6 +166,7 @@ class SaveModel(TrackerCallback):
 
     def after_fit(self, **kwargs):
         "Load the best model."
+        self.learn.recorder.silent = True
         if self.at_end: self._save(f'{self.fname}')
         elif not self.every_epoch: self.learn.load(f'{self.fname}', with_opt=self.with_opt)
 
