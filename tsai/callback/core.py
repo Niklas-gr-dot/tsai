@@ -77,6 +77,7 @@ class ShowGraph(Callback):
     names = ['train', 'valid']
     def __init__(self, plot_metrics:bool=True, final_losses:bool=True):
         store_attr("plot_metrics,final_losses")
+        print("HAAALLOO")
 
     def before_fit(self):
         self.run = not hasattr(self.learn, 'lr_finder') and not hasattr(self, "gather_preds")
