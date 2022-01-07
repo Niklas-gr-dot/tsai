@@ -75,9 +75,9 @@ class ShowGraph(Callback):
     "(Modified) Update a graph of training and validation loss"
     order,run_valid=65,False
     names = ['train', 'valid']
-    def __init__(self, plot_metrics:bool=True, final_losses:bool=True):
+    def __init__(self, plot_metrics:bool=True, final_losses:bool=False):
         store_attr("plot_metrics,final_losses")
-        print("HAAALLOO")
+        
 
     def before_fit(self):
         self.run = not hasattr(self.learn, 'lr_finder') and not hasattr(self, "gather_preds")
@@ -100,7 +100,8 @@ class ShowGraph(Callback):
             self.rec_start = len(rec.losses)
         iters = range_of(rec.losses)
         val_losses = np.stack(rec.values)[:, self.learn.recorder.loss_idxs[-1]].tolist()
-        
+        print("losses", val_losses)
+        print(rec.losses)
         x_bounds = (0, len(rec.losses) - 1)
         if self.epoch == 0:
             y_min = min((min(rec.losses), min(val_losses)))
