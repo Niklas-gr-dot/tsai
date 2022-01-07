@@ -100,8 +100,7 @@ class ShowGraph(Callback):
             self.rec_start = len(rec.losses)
         iters = range_of(rec.losses)
         val_losses = np.stack(rec.values)[:, self.learn.recorder.loss_idxs[-1]].tolist()
-        print("losses", val_losses)
-        print(rec.losses)
+        
         x_bounds = (0, len(rec.losses) - 1)
         if self.epoch == 0:
             y_min = min((min(rec.losses), min(val_losses)))
