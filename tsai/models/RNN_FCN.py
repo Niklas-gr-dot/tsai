@@ -9,7 +9,7 @@ from .layers import *
 # Cell
 class _RNN_FCN_Base(Module):
     def __init__(self, c_in, c_out, seq_len=None, hidden_size=100, rnn_layers=1, bias=True, cell_dropout=0, rnn_dropout=0.8, bidirectional=False, shuffle=True,
-                 fc_dropout=0., conv_layers=[128, 256, 128], kss=[7, 5, 3], se=0, callback_fns = None):
+                 fc_dropout=0., conv_layers=[128, 256, 128], kss=[7, 5, 3], se=0):
 
         if shuffle: assert seq_len is not None, 'need seq_len if shuffle=True'
 
