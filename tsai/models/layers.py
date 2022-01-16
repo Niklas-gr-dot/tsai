@@ -54,7 +54,7 @@ class Chomp1d(nn.Module):
         return x[:, :, :-self.chomp_size].contiguous()
 
 # Cell
-def same_padding1d(seq_len, ks, stride=5, dilation=1):
+def same_padding1d(seq_len, ks, stride=1, dilation=1):
     "Same padding formula as used in Tensorflow"
     p = (seq_len - 1) * stride + (ks - 1) * dilation + 1 - seq_len
     return p // 2, p - p // 2
@@ -68,7 +68,7 @@ class Pad1d(nn.ConstantPad1d):
 @delegates(nn.Conv1d)
 class SameConv1d(Module):
     "Conv1d with padding='same'"
-    def __init__(self, ni, nf, ks=3, stride=5, dilation=1, **kwargs):
+    def __init__(self, ni, nf, ks=3, stride=1, dilation=1, **kwargs):
         self.ks, self.stride, self.dilation = ks, stride, dilation
         self.conv1d_same = nn.Conv1d(ni, nf, ks, stride=stride, dilation=dilation, **kwargs)
         self.weight = self.conv1d_same.weight
@@ -98,7 +98,7 @@ class Pad2d(nn.ConstantPad2d):
 @delegates(nn.Conv2d)
 class Conv2dSame(Module):
     "Conv2d with padding='same'"
-    def __init__(self, ni, nf, ks=(3, 3), stride=(2, 2), dilation=(1, 1), **kwargs):
+    def __init__(self, ni, nf, ks=(3, 3), stride=(1, 1), dilation=(1, 1), **kwargs):
         if isinstance(ks, Integral): ks = (ks, ks)
         if isinstance(stride, Integral): stride = (stride, stride)
         if isinstance(dilation, Integral): dilation = (dilation, dilation)
@@ -114,7 +114,7 @@ class Conv2dSame(Module):
 
 
 @delegates(nn.Conv2d)
-def Conv2d(ni, nf, kernel_size=None, ks=None, stride=5, padding='causal', dilation=1, init='auto', bias_std=0.01, **kwargs):
+def Conv2d(ni, nf, kernel_size=None, ks=None, stride=1, padding='valid', dilation=1, init='auto', bias_std=0.01, **kwargs):
     "conv1d layer with padding='same', 'valid', or any integer (defaults to 'same')"
     assert not (kernel_size and ks), 'use kernel_size or ks but not both simultaneously'
     assert kernel_size is not None or ks is not None, 'you need to pass a ks'
@@ -128,7 +128,7 @@ def Conv2d(ni, nf, kernel_size=None, ks=None, stride=5, padding='causal', dilati
 
 # Cell
 class CausalConv1d(torch.nn.Conv1d):
-    def __init__(self, ni, nf, ks, stride=5, dilation=1, groups=1, bias=True):
+    def __init__(self, ni, nf, ks, stride=1, dilation=1, groups=1, bias=True):
         super(CausalConv1d, self).__init__(ni, nf, kernel_size=ks, stride=stride, padding=0, dilation=dilation, groups=groups, bias=bias)
         self.__padding = (ks - 1) * dilation
     def forward(self, input):
@@ -136,7 +136,7 @@ class CausalConv1d(torch.nn.Conv1d):
 
 # Cell
 @delegates(nn.Conv1d)
-def Conv1d(ni, nf, kernel_size=None, ks=None, stride=5, padding='causal', dilation=1, init='auto', bias_std=0.01, **kwargs):
+def Conv1d(ni, nf, kernel_size=None, ks=None, stride=1, padding='valid', dilation=1, init='auto', bias_std=0.01, **kwargs):
     "conv1d layer with padding='same', 'causal', 'valid', or any integer (defaults to 'same')"
     assert not (kernel_size and ks), 'use kernel_size or ks but not both simultaneously'
     assert kernel_size is not None or ks is not None, 'you need to pass a ks'
@@ -154,7 +154,7 @@ def Conv1d(ni, nf, kernel_size=None, ks=None, stride=5, padding='causal', dilati
 
 # Cell
 class SeparableConv1d(Module):
-    def __init__(self, ni, nf, ks, stride=5, padding='causal', dilation=1, bias=True, bias_std=0.01):
+    def __init__(self, ni, nf, ks, stride=1, padding='valid', dilation=1, bias=True, bias_std=0.01):
         self.depthwise_conv = Conv1d(ni, ni, ks, stride=stride, padding=padding, dilation=dilation, groups=ni, bias=bias)
         self.pointwise_conv = nn.Conv1d(ni, nf, 1, stride=1, padding=0, dilation=1, groups=1, bias=bias)
         if bias:
@@ -183,7 +183,7 @@ class AddCoords1d(Module):
 # Cell
 class ConvBlock(nn.Sequential):
     "Create a sequence of conv1d (`ni` to `nf`), activation (if `act_cls`) and `norm_type` layers."
-    def __init__(self, ni, nf, kernel_size=None, ks=3, stride=5, padding='causal', bias=None, bias_std=0.01, norm='Batch', zero_norm=False, bn_1st=True,
+    def __init__(self, ni, nf, kernel_size=None, ks=3, stride=1, padding='valid', bias=None, bias_std=0.01, norm='Batch', zero_norm=False, bn_1st=True,
                  act=nn.ReLU, act_kwargs={}, init='auto', dropout=0., xtra=None, coord=False, separable=False,  **kwargs):
         kernel_size = kernel_size or ks
         ndim = 1
@@ -218,7 +218,7 @@ SepConv = named_partial('SepConv', ConvBlock, norm=None, act=None, separable=Tru
 class ResBlock1dPlus(Module):
     "Resnet block from `ni` to `nh` with `stride`"
     @delegates(ConvLayer.__init__)
-    def __init__(self, expansion, ni, nf, coord=False, stride=5, groups=1, reduction=None, nh1=None, nh2=None, dw=False, g2=1,
+    def __init__(self, expansion, ni, nf, coord=False, stride=1, groups=1, reduction=None, nh1=None, nh2=None, dw=False, g2=1,
                  sa=False, sym=False, norm='Batch', zero_norm=True, act_cls=defaults.activation, ks=3,
                  pool=AvgPool, pool_first=True, **kwargs):
         if nh2 is None: nh2 = nf
