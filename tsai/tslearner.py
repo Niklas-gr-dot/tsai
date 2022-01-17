@@ -3,6 +3,7 @@
 __all__ = ['TSClassifier', 'TSRegressor', 'TSForecaster']
 
 # Cell
+from tsai.losses import HuberLoss
 from .imports import *
 from .learner import *
 from .data.all import *
@@ -43,7 +44,7 @@ class TSClassifier(Learner):
             if hasattr(dls, 'loss_func'): loss_func = dls.loss_func
             elif hasattr(dls, 'cat') and not dls.cat: loss_func = MSELossFlat()
             elif hasattr(dls, 'train_ds') and hasattr(dls.train_ds, 'loss_func'): loss_func = dls.train_ds.loss_func
-            else: loss_func = CrossEntropyLossFlat()
+            else: loss_func = HuberLoss() #CrossEntropyLossFlat()
         print("USED LOSS FUNCTION:", loss_func)
         # Model
         if init is True:
