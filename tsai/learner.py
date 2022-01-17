@@ -491,7 +491,7 @@ def get_arch(arch_name):
 def ts_learner(dls, arch=None, c_in=None, c_out=None, seq_len=None, d=None, splitter=trainable_params,
                # learner args
                loss_func=None, opt_func= Adam, lr=defaults.lr, cbs=None, metrics=None, path=None,
-               model_dir='models', wd=None, wd_bn_bias=False, train_bn=True, moms=(0.95,0.85,0.95), train_metrics=False,
+               model_dir='models', wd=None, wd_bn_bias=False, train_bn=True, moms=(0.95,0.85,0.95), train_metrics=False, 
                # other model args
                **kwargs):
 
