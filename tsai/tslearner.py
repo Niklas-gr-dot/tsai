@@ -10,7 +10,7 @@ from .data.all import *
 from .models.InceptionTimePlus import *
 from .models.utils import *
 from dataclasses import dataclass
-
+import tensorflow as tf
 # Cell
 # @dataclass
 # class SilenceRecorder(Callback):
@@ -22,7 +22,7 @@ class TSClassifier(Learner):
     def __init__(self, X, y=None, splits=None, tfms=None, inplace=True, sel_vars=None, sel_steps=None, weights=None, partial_n=None,
                  bs=[64, 128], batch_size=None, batch_tfms=None, shuffle_train=True, drop_last=True, num_workers=0, do_setup=True, device=None,
                  arch=None, arch_config={}, pretrained=False, weights_path=None, exclude_head=True, cut=-1, init=None,
-                 loss_func=None, opt_func=QHAdam, lr=0.001, metrics=accuracy, cbs=None, wd=None, wd_bn_bias=False,
+                 loss_func=None, opt_func=tf.keras.optimizers.Nadam, lr=0.001, metrics=accuracy, cbs=None, wd=None, wd_bn_bias=False,
                  train_bn=True, moms=(0.95, 0.85, 0.95),  path='.', model_dir='models', splitter=trainable_params, verbose=False):
 
         #Splits
@@ -46,6 +46,8 @@ class TSClassifier(Learner):
             elif hasattr(dls, 'train_ds') and hasattr(dls.train_ds, 'loss_func'): loss_func = dls.train_ds.loss_func
             else: loss_func = CrossEntropyLossFlat()
         print("USED LOSS FUNCTION:", loss_func)
+        print("Optimizer: ", opt_func)
+        print("learning_rate: ", lr)
         # Model
         if init is True:
             init = nn.init.kaiming_normal_
