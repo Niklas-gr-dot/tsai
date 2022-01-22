@@ -8,7 +8,4 @@ from fastai.optimizer import *
 
 
 # Cell
-def wrap_optimizer(opt, **kwargs): 
-    print("HAAALLLOOOO")
-    print(**kwargs)
-    return partial(OptimWrapper, opt=opt, **kwargs)
+def wrap_optimizer(opt, **kwargs): return partial(OptimWrapper, opt=opt, **kwargs)
