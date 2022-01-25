@@ -34,7 +34,7 @@ class TSClassifier(Learner):
         # Batch size
         if batch_size is not None:
             bs = batch_size
-            print("Batch_size: ", bs)
+            
 
         # DataLoaders
         dls = get_ts_dls(X, y=y, splits=splits, sel_vars=sel_vars, sel_steps=sel_steps, tfms=tfms, inplace=inplace,
@@ -49,6 +49,7 @@ class TSClassifier(Learner):
         print("USED LOSS FUNCTION:", loss_func)
         print("Optimizer: ", opt_func)
         print("learning_rate: ", lr)
+        print("Batch_size: ", bs)
         # Model
         if init is True:
             init = nn.init.kaiming_normal_
