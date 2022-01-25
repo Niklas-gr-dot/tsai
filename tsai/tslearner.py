@@ -20,7 +20,7 @@ from dataclasses import dataclass
 
 class TSClassifier(Learner):
     def __init__(self, X, y=None, splits=None, tfms=None, inplace=True, sel_vars=None, sel_steps=None, weights=None, partial_n=None,
-                 bs=[64, 128], batch_size=None, batch_tfms=None, shuffle_train=True, drop_last=True, num_workers=0, do_setup=True, device=None,
+                 bs=[128, 128], batch_size=None, batch_tfms=None, shuffle_train=True, drop_last=True, num_workers=0, do_setup=True, device=None,
                  arch=None, arch_config={}, pretrained=False, weights_path=None, exclude_head=True, cut=-1, init=None,
                  loss_func=None, opt_func= Adam, lr=0.0001, metrics=accuracy, cbs=None, wd=None, wd_bn_bias=False,
                  train_bn=True, moms=(0.95, 0.85, 0.95),  path='.', model_dir='models', splitter=trainable_params, verbose=False):
@@ -34,6 +34,7 @@ class TSClassifier(Learner):
         # Batch size
         if batch_size is not None:
             bs = batch_size
+            print("Batch_size: ", bs)
 
         # DataLoaders
         dls = get_ts_dls(X, y=y, splits=splits, sel_vars=sel_vars, sel_steps=sel_steps, tfms=tfms, inplace=inplace,
