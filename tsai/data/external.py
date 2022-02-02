@@ -14,9 +14,9 @@ from ..utils import *
 from .validation import *
 
 # Cell
-from sktime.utils.data_io import load_from_tsfile_to_dataframe as ts2df
+#from sktime.utils.data_io import load_from_tsfile_to_dataframe as ts2df
 from sktime.utils.validation.panel import check_X
-from sktime.utils.data_io import TsFileParseException
+#from sktime.utils.data_io import TsFileParseException
 
 # Cell
 from fastai.data.external import *
