@@ -124,7 +124,7 @@ class ToInt(Transform):
 
 class TSClassification(DisplayedTransform):
     "Vectorized, reversible transform of category string to `vocab` id"
-    loss_func,order,vectorized=MSELossFlat(),1,True #CrossEntropyLossFlat()
+    loss_func,order,vectorized=L1LossFlat(),1,True #CrossEntropyLossFlat()
 
     def __init__(self, vocab=None, sort=True):
         if vocab is not None: vocab = CategoryMap(vocab, sort=sort, add_na=False)
