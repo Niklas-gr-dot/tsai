@@ -130,7 +130,7 @@ def get_metrics(data):
     print("TYYYYYPE", type(data))
     df = pd.DataFrame(data)
 
-    df.to_csv('/gdrive/MyDrive/Masterthesis/LSTM/Results/Results LSTM FCN.csv', mode= 'a')
+    df.to_csv('/gdrive/MyDrive/Masterthesis/InceptionTime/Results/Results-InceptionTime.csv', mode= 'a')
     print(df)
 
 
@@ -494,7 +494,7 @@ def get_arch(arch_name):
 @delegates(build_ts_model)
 def ts_learner(dls, arch=None, c_in=None, c_out=None, seq_len=None, d=None, splitter=trainable_params,
                # learner args
-               loss_func=None, opt_func= None, lr=defaults.lr, cbs=None, metrics=None, path=None,
+               loss_func=None, opt_func= Adam, lr=defaults.lr, cbs=None, metrics=None, path=None,
                model_dir='models', wd=None, wd_bn_bias=False, train_bn=True, moms=(0.95,0.85,0.95), train_metrics=False, 
                # other model args defaults.lr
                **kwargs):
