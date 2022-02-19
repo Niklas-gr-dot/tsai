@@ -24,7 +24,7 @@ class InceptionModule(Module):
         self.maxconvpool = nn.Sequential(*[nn.MaxPool1d(3, stride=1, padding=1), Conv1d(ni, nf, 1, bias=False)])
         self.concat = Concat()
         self.bn = BN1d(nf * 4)
-        self.act = nn.ReLU()
+        self.act = nn.Sigmoid()
 
     def forward(self, x):
         input_tensor = x
@@ -35,7 +35,7 @@ class InceptionModule(Module):
 
 @delegates(InceptionModule.__init__)
 class InceptionBlock(Module):
-    def __init__(self, ni, nf=32, residual=True, depth=10, **kwargs):
+    def __init__(self, ni, nf=32, residual=True, depth=6, **kwargs):
         self.residual, self.depth = residual, depth
         self.inception, self.shortcut = nn.ModuleList(), nn.ModuleList()
         for d in range(depth):
@@ -44,7 +44,7 @@ class InceptionBlock(Module):
                 n_in, n_out = ni if d == 2 else nf * 4, nf * 4
                 self.shortcut.append(BN1d(n_in) if n_in == n_out else ConvBlock(n_in, n_out, 1, act=None))
         self.add = Add()
-        self.act = nn.ReLU()
+        self.act = nn.Sigmoid()
         print("Activation function: ",self.act)
         print("Number of filters: ", nf)
         print("depth (Number of InceptionModules) ", depth)
