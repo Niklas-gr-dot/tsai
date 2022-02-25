@@ -15,7 +15,7 @@ from .utils import *
 # Official InceptionTime tensorflow implementation: https://github.com/hfawaz/InceptionTime
 
 class InceptionModule(Module):
-    def __init__(self, ni, nf, ks=10, bottleneck=True):
+    def __init__(self, ni, nf, ks=40, bottleneck=True):
         ks = [ks // (2**i) for i in range(3)]
         ks = [k if k % 2 != 0 else k - 1 for k in ks]  # ensure odd ks
         bottleneck = bottleneck if ni > 1 else False
@@ -35,7 +35,7 @@ class InceptionModule(Module):
 
 @delegates(InceptionModule.__init__)
 class InceptionBlock(Module):
-    def __init__(self, ni, nf=10, residual=True, depth=6, **kwargs):
+    def __init__(self, ni, nf=32, residual=True, depth=6, **kwargs):
         self.residual, self.depth = residual, depth
         self.inception, self.shortcut = nn.ModuleList(), nn.ModuleList()
         for d in range(depth):
@@ -58,7 +58,7 @@ class InceptionBlock(Module):
 
 @delegates(InceptionModule.__init__)
 class InceptionTime(Module):
-    def __init__(self, c_in, c_out, seq_len=None, nf=10, nb_filters=None, **kwargs):
+    def __init__(self, c_in, c_out, seq_len=None, nf=32, nb_filters=None, **kwargs):
         nf = ifnone(nf, nb_filters) # for compatibility
         self.inceptionblock = InceptionBlock(c_in, nf, **kwargs)
         self.gap = GAP1d(1)
