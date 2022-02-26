@@ -35,7 +35,7 @@ class InceptionModule(Module):
 
 @delegates(InceptionModule.__init__)
 class InceptionBlock(Module):
-    def __init__(self, ni, nf=32, residual=True, depth=6, **kwargs):
+    def __init__(self, ni, nf=32, residual=True, depth=10, **kwargs):
         self.residual, self.depth = residual, depth
         self.inception, self.shortcut = nn.ModuleList(), nn.ModuleList()
         for d in range(depth):
