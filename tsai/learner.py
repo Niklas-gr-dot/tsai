@@ -130,7 +130,7 @@ def get_metrics(data):
     print("TYYYYYPE", type(data))
     df = pd.DataFrame(data)
 
-    df.to_csv('/gdrive/MyDrive/Masterthesis/TabTransformer/Results-InceptionTime.csv', mode= 'a')
+    df.to_csv('/gdrive/MyDrive/Masterthesis/ResNet/Results-InceptionTime.csv', mode= 'a')
     print(df)
 
 
