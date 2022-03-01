@@ -45,7 +45,7 @@ class TSClassifier(Learner):
             if hasattr(dls, 'loss_func'): loss_func = dls.loss_func
             elif hasattr(dls, 'cat') and not dls.cat: loss_func = MSELossFlat()
             elif hasattr(dls, 'train_ds') and hasattr(dls.train_ds, 'loss_func'): loss_func = dls.train_ds.loss_func
-            else: loss_func = CrossEntropyLossFlat() #L1LossFlat() #MSELossFlat() #
+            else: loss_func = MSELossFlat() #CrossEntropyLossFlat() #L1LossFlat() #MSELossFlat() #
         print("USED LOSS FUNCTION:", loss_func)
         print("Optimizer: ", opt_func)
         print("learning_rate: ", lr)
