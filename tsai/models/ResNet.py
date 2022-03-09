@@ -8,11 +8,13 @@ from .layers import *
 
 # Cell
 class ResBlock(Module):
-    def __init__(self, ni, nf, kss=[7, 5, 3]):
+    def __init__(self, ni, nf, kss=[11,9,7, 5, 3]):
         
         self.convblock1 = ConvBlock(ni, nf, kss[0])
         self.convblock2 = ConvBlock(nf, nf, kss[1])
-        self.convblock3 = ConvBlock(nf, nf, kss[2], act=None)
+        self.convblock3 = ConvBlock(nf, nf, kss[2])
+        self.convblock4 = ConvBlock(nf, nf, kss[3])
+        self.convblock5 = ConvBlock(nf, nf, kss[4], act=None)
 
         # expand channels for the sum if necessary
         self.shortcut = BN1d(ni) if ni == nf else ConvBlock(ni, nf, 1, act=None)
@@ -24,6 +26,9 @@ class ResBlock(Module):
         x = self.convblock1(x)
         x = self.convblock2(x)
         x = self.convblock3(x)
+        #####
+        x = self.convblock4(x)
+        x = self.convblock5(x)
         x = self.add(x, self.shortcut(res))
         x = self.act(x)
         return x
@@ -45,5 +50,7 @@ class ResNet(Module):
         x = self.resblock1(x)
         x = self.resblock2(x)
         x = self.resblock3(x)
+        x = self.resblock4(x)
+        x = self.resblock5(x)
         x = self.squeeze(self.gap(x))
         return self.fc(x)
