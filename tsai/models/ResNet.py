@@ -50,7 +50,5 @@ class ResNet(Module):
         x = self.resblock1(x)
         x = self.resblock2(x)
         x = self.resblock3(x)
-        x = self.resblock4(x)
-        x = self.resblock5(x)
         x = self.squeeze(self.gap(x))
         return self.fc(x)
