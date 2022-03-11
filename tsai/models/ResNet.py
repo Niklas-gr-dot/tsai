@@ -8,13 +8,15 @@ from .layers import *
 
 # Cell
 class ResBlock(Module):
-    def __init__(self, ni, nf, kss=[11,9,7, 5, 3]):
+    def __init__(self, ni, nf, kss=[13,11,9,7, 5, 3,1]):
         
         self.convblock1 = ConvBlock(ni, nf, kss[0])
         self.convblock2 = ConvBlock(nf, nf, kss[1])
         self.convblock3 = ConvBlock(nf, nf, kss[2])
         self.convblock4 = ConvBlock(nf, nf, kss[3])
-        self.convblock5 = ConvBlock(nf, nf, kss[4], act=None)
+        self.convblock5 = ConvBlock(nf, nf, kss[4])
+        self.convblock5 = ConvBlock(nf, nf, kss[5])
+        self.convblock5 = ConvBlock(nf, nf, kss[6], act=None)
 
         # expand channels for the sum if necessary
         self.shortcut = BN1d(ni) if ni == nf else ConvBlock(ni, nf, 1, act=None)
@@ -29,6 +31,8 @@ class ResBlock(Module):
         #####
         x = self.convblock4(x)
         x = self.convblock5(x)
+        x = self.convblock6(x)
+        x = self.convblock7(x)
         x = self.add(x, self.shortcut(res))
         x = self.act(x)
         return x
@@ -36,7 +40,7 @@ class ResBlock(Module):
 class ResNet(Module):
     def __init__(self, c_in, c_out):
         nf = 64
-        kss=[11,9,7, 5, 3]
+        kss=[13,11,9,7, 5, 3,1]
         print("number of filters: ", nf)
         print("Kernelsizes  : ", kss)
         self.resblock1 = ResBlock(c_in, nf, kss=kss)
