@@ -15,8 +15,8 @@ class ResBlock(Module):
         self.convblock3 = ConvBlock(nf, nf, kss[2])
         self.convblock4 = ConvBlock(nf, nf, kss[3])
         self.convblock5 = ConvBlock(nf, nf, kss[4])
-        self.convblock5 = ConvBlock(nf, nf, kss[5])
-        self.convblock5 = ConvBlock(nf, nf, kss[6], act=None)
+        self.convblock6 = ConvBlock(nf, nf, kss[5])
+        self.convblock7 = ConvBlock(nf, nf, kss[6], act=None)
 
         # expand channels for the sum if necessary
         self.shortcut = BN1d(ni) if ni == nf else ConvBlock(ni, nf, 1, act=None)
