@@ -183,8 +183,10 @@ class AddCoords1d(Module):
 # Cell
 class ConvBlock(nn.Sequential):
     "Create a sequence of conv1d (`ni` to `nf`), activation (if `act_cls`) and `norm_type` layers."
-    def __init__(self, ni, nf, kernel_size=None, ks=3, stride=1, padding='same', bias=None, bias_std=0.01, norm='Batch', zero_norm=False, bn_1st=True,
+    def __init__(self, ni, nf, kernel_size=None, ks=3, stride=1, padding='valid', bias=None, bias_std=0.01, norm='Batch', zero_norm=False, bn_1st=True,
                  act=nn.ReLU, act_kwargs={}, init='auto', dropout=0., xtra=None, coord=False, separable=False,  **kwargs):
+        print("STRIDE: ", stride)
+        print("PADDING : ", padding)
         kernel_size = kernel_size or ks
         ndim = 1
         layers = [AddCoords1d()] if coord else []
