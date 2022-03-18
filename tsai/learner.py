@@ -494,7 +494,7 @@ def get_arch(arch_name):
 @delegates(build_ts_model)
 def ts_learner(dls, arch=None, c_in=None, c_out=None, seq_len=None, d=None, splitter=trainable_params,
                # learner args
-               loss_func=None, opt_func= Adam, lr=0.001, cbs=None, metrics=None, path=None,
+               loss_func=None, opt_func= Adam, lr=0.0001, cbs=None, metrics=None, path=None,
                model_dir='models', wd=None, wd_bn_bias=False, train_bn=True, moms=(0.95,0.85,0.95), train_metrics=False, 
                # other model args defaults.lr
                **kwargs):
@@ -508,6 +508,8 @@ def ts_learner(dls, arch=None, c_in=None, c_out=None, seq_len=None, d=None, spli
         if hasattr(dls, 'loss_func'): loss_func = dls.loss_func
         elif hasattr(dls, 'train_ds') and hasattr(dls.train_ds, 'loss_func'): loss_func = dls.train_ds.loss_func
         elif hasattr(dls, 'cat') and not dls.cat: loss_func = MSELossFlat()
+    
+    print("LOSS_FUNC: ", loss_func)
 
     learn = Learner(dls=dls, model=model,
                     loss_func=loss_func, opt_func=opt_func, lr=lr, cbs=cbs, metrics=metrics, path=path, splitter=splitter,
