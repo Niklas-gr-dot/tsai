@@ -136,7 +136,7 @@ class CausalConv1d(torch.nn.Conv1d):
 
 # Cell
 @delegates(nn.Conv1d)
-def Conv1d(ni, nf, kernel_size=None, ks=None, stride=1, padding='causal', dilation=1, init='auto', bias_std=0.01, **kwargs):
+def Conv1d(ni, nf, kernel_size=None, ks=None, stride=1, padding='valid', dilation=1, init='auto', bias_std=0.01, **kwargs):
     "conv1d layer with padding='same', 'causal', 'valid', or any integer (defaults to 'same')"
     assert not (kernel_size and ks), 'use kernel_size or ks but not both simultaneously'
     assert kernel_size is not None or ks is not None, 'you need to pass a ks'
@@ -183,7 +183,7 @@ class AddCoords1d(Module):
 # Cell
 class ConvBlock(nn.Sequential):
     "Create a sequence of conv1d (`ni` to `nf`), activation (if `act_cls`) and `norm_type` layers."
-    def __init__(self, ni, nf, kernel_size=None, ks=3, stride=1, padding='causal', bias=None, bias_std=0.01, norm='Batch', zero_norm=False, bn_1st=True,
+    def __init__(self, ni, nf, kernel_size=None, ks=3, stride=1, padding='valid', bias=None, bias_std=0.01, norm='Batch', zero_norm=False, bn_1st=True,
                  act=nn.ReLU, act_kwargs={}, init='auto', dropout=0., xtra=None, coord=False, separable=False,  **kwargs):
         print("STRIDE: ", stride)
         print("PADDING : ", padding)
