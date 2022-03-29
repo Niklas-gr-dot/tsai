@@ -136,7 +136,7 @@ class CausalConv1d(torch.nn.Conv1d):
 
 # Cell
 @delegates(nn.Conv1d)
-def Conv1d(ni, nf, kernel_size=None, ks=None, stride=1, padding='same', dilation=1, init='auto', bias_std=0.01, **kwargs):
+def Conv1d(ni, nf, kernel_size=None, ks=None, stride=1, padding='valid', dilation=1, init='auto', bias_std=0.01, **kwargs):
     "conv1d layer with padding='same', 'causal', 'valid', or any integer (defaults to 'same')"
     assert not (kernel_size and ks), 'use kernel_size or ks but not both simultaneously'
     assert kernel_size is not None or ks is not None, 'you need to pass a ks'
@@ -154,7 +154,7 @@ def Conv1d(ni, nf, kernel_size=None, ks=None, stride=1, padding='same', dilation
 
 # Cell
 class SeparableConv1d(Module):
-    def __init__(self, ni, nf, ks, stride=1, padding='same', dilation=1, bias=True, bias_std=0.01):
+    def __init__(self, ni, nf, ks, stride=1, padding='valid', dilation=1, bias=True, bias_std=0.01):
         self.depthwise_conv = Conv1d(ni, ni, ks, stride=stride, padding=padding, dilation=dilation, groups=ni, bias=bias)
         self.pointwise_conv = nn.Conv1d(ni, nf, 1, stride=1, padding=0, dilation=1, groups=1, bias=bias)
         if bias:
