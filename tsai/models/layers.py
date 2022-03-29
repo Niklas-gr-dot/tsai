@@ -136,7 +136,7 @@ class CausalConv1d(torch.nn.Conv1d):
 
 # Cell
 @delegates(nn.Conv1d)
-def Conv1d(ni, nf, kernel_size=None, ks=None, stride=1, padding='valid', dilation=1, init='auto', bias_std=0.01, **kwargs):
+def Conv1d(ni, nf, kernel_size=None, ks=None, stride=1, padding='same', dilation=1, init='auto', bias_std=0.01, **kwargs):
     "conv1d layer with padding='same', 'causal', 'valid', or any integer (defaults to 'same')"
     assert not (kernel_size and ks), 'use kernel_size or ks but not both simultaneously'
     assert kernel_size is not None or ks is not None, 'you need to pass a ks'
