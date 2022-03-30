@@ -35,7 +35,7 @@ class ResBlock(Module):
 class ResNet(Module):
     def __init__(self, c_in, c_out):
         nf = 64 #64
-        kss=[ 15,13,11] #7,5, 3
+        kss=[ 7,5,3] #7,5, 3
         print("number of filters: ", nf)
         print("Kernelsizes  : ", kss)
         self.resblock1 = ResBlock(c_in, nf, kss=kss)
