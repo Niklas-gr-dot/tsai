@@ -20,7 +20,7 @@ class InceptionModule(Module):
         ks = [k if k % 2 != 0 else k - 1 for k in ks]  # ensure odd ks
         bottleneck = bottleneck if ni > 1 else False
         self.bottleneck = Conv1d(ni, nf, 1, bias=False) if bottleneck else noop
-        self.convs = nn.ModuleList([Conv1d(nf if bottleneck else ni, nf, k, bias=False, padding = 'valid') for k in ks])
+        self.convs = nn.ModuleList([Conv1d(nf if bottleneck else ni, nf, k, bias=False, padding = 'same') for k in ks])
         self.maxconvpool = nn.Sequential(*[nn.MaxPool1d(3, stride=1, padding=1), Conv1d(ni, nf, 1, bias=False)])
         self.concat = Concat()
         self.bn = BN1d(nf * 4)
@@ -35,7 +35,7 @@ class InceptionModule(Module):
 
 @delegates(InceptionModule.__init__)
 class InceptionBlock(Module):
-    def __init__(self, ni, nf=32, residual=True, depth=6, **kwargs):
+    def __init__(self, ni, nf=10, residual=True, depth=6, **kwargs):
         self.residual, self.depth = residual, depth
         self.inception, self.shortcut = nn.ModuleList(), nn.ModuleList()
         for d in range(depth):
