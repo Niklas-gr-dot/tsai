@@ -19,7 +19,7 @@ class ResBlock(Module):
         # expand channels for the sum if necessary
         self.shortcut = BN1d(ni) if ni == nf else ConvBlock(ni, nf, 1, act=None)
         self.add = Add()
-        self.act = nn.Sigmoid()
+        self.act = nn.ReLU()
 
     def forward(self, x):
         res = x
